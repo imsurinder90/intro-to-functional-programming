@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>An Introduction to Functional Programming</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+    </style>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+<textarea id="source">
+
+class: center, middle, inverse
+
+# Functional Programming ?
+
+    Surinder Kumar
+    imsurinder90.github.io
+---
+
+# Content
+
+1. Introduction
+2. Why Functional Programming?
+3. Pure functions
+4. Avoid Side effects
+5. Function Composition
+5. Higher order function
+6. Expression vs Statements
+7. Declarative and Iterative
+8. Immutability
+
+---
+name: fp_1
+class:
+# Functional Programming
+---
+name: fp_2
+template: fp_1
+  - Is a Software Paradigm that emphasis to use functions.
+---
+template: fp_2
+  - Abstract control flow and operations on data and functions
+---
+name: why_fp_1
+# Why Functional Javascript?
+---
+name: why_fp_2
+template: why_fp_1
+- Object Oriented Paradigm not useful in every kind of problem.
+---
+name: why_fp_3
+template: why_fp_2
+- Simple to write and understand.
+---
+name: why_fp_4
+template: why_fp_3
+- Easier to debug and maintain.
+---
+name: why_fp_5
+template: why_fp_4
+- Data in > Data out.
+---
+template: why_fp_5
+- Easy to test.
+
+---
+name: pf
+# Pure functions
+---
+name: pf1
+template: pf
+- Only depends on given input
+---
+name: pf2
+template: pf1
+- Doesn't make changes into global object
+---
+name: pf3
+template: pf2
+- Always return same output of the same input
+---
+name: pf4
+template: pf3
+- Avoid Side effects
+---
+name: pf5
+template: pf4
+
+``` Javascript
+# Impure function
+var name = "Surinder";
+var greeting = "Hi, Myself";
+
+console.log(greeting + ' ' + name);
+// Hi, Myself Surinder
+
+```
+---
+template: pf5
+``` Javascript
+# Pure function
+function greet(name) {
+    return "Hi, Myself " + name;
+}
+
+greet("Surinder");
+// Hi, Myself Surinder
+
+```
+---
+name: ase
+
+# Avoid Side effects
+---
+name: ase1
+template: ase
+A side effect is any application state change that is observable outside the called function other than its return value.
+---
+name: ase2
+template: ase1
+
+** Side effects includes:**
+ - Modifying any external variable or object property (e.g., a global variable, or a variable in the parent function scope chain)
+---
+name: ase3
+template: ase2
+ - Logging to the console
+---
+name: ase4
+template: ase3
+
+**Impure function:**
+
+``` Javascript
+var name = "Surinder";
+function greet() {
+  console.log("Hi, My name is " + name);
+}
+
+```
+---
+template: ase4
+
+**Pure function:**
+
+``` Javascript
+function greet(name) {
+  return "Hi, My name is " + name;
+}
+```
+
+---
+name: func_comp
+# Function Composition
+---
+name: func_comp_1
+template: func_comp
+
+Combining two or more function to produce a new function.
+Composing function - Creating a series of pipes through which data flow.
+---
+name: func_comp_2
+template: func_comp_1
+
+**Example:** A composition can easily be defined using mathematical terms as
+`f(g(x))` which is evaluated from inside out.
+---
+name: func_comp_3
+template: func_comp_2
+
+Convert user name to URL slug ie. `Surinder Kumar` to `surinder-kumar`
+---
+name: func_comp_4
+template: func_comp_3
+
+**Steps to follow:**
+
+  - Split the name on space between user's name
+  - Map the name to lowercase
+  - Join with dashes
+  - Encode the URI component
+
+---
+name: func_comp_ex
+**Let's look at a simple example:**
+
+``` Javascript
+const toSlug = input => encodeURIComponent(
+  input.split(' ')
+    .map(str => str.toLowerCase())
+    .join('-')
+);
+```
+---
+template: func_comp_ex
+Now, a simpler implementation using utilities available in Lodash library:
+
+``` Javascript
+const toSlug = pipe(
+  split(' '),
+  map(toLowerCase),
+  join('-'),
+  encodeURIComponent
+);
+
+console.log(toSlug('Surinder Kumar')); // 'surinder-kumar'
+```
+
+---
+name: higher_order_function
+# Higher order function
+---
+name: higher_order_function_1
+template: higher_order_function
+A Function that either takes a function(s) as an argument or returns a function.
+---
+template: higher_order_function_1
+
+`hx = f(g(x))`
+
+---
+name: use_shorthands
+# Use Map, Reduce and Filter
+---
+name: use_shorthands_1
+template: use_shorthands
+Stop iterating, instead use shorthands such as Map, Reduce, Filter etc.
+---
+template: use_shorthands_1
+![Sandwich Example](sandwich_example.png)
+
+---
+name: di
+# Declarative and Iterative
+---
+name: di_1
+template: di
+
+Functional programming is a declarative paradigm, meaning that the program logic is expressed without explicitly describing the flow control.
+---
+name: di_2
+template: di_1
+
+** Imperative programs:**
+
+Where code describing the specific steps used to achieve the desired results — the flow control: How to do things.
+---
+name: di_3
+template: di_2
+
+**Declarative programs:**
+
+Abstract the flow control process, and instead code describing the data flow: What to do.
+The how gets abstracted away.
+
+---
+name: imp_example
+### Imperative Example:
+
+``` Javascript
+const doubleMap = numbers => {
+  const doubled = [];
+  for (let i = 0; i < numbers.length; i++) {
+    doubled.push(numbers[i] * 2);
+  }
+  return doubled;
+};
+
+console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
+```
+---
+name: imp_example_1
+template: imp_example
+### Declarative Example:
+
+``` Javascript
+const doubleMap = numbers => numbers.map(n => n * 2);
+
+console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
+```
+
+---
+name: immutability_example
+# Immutability
+---
+name: immutability_example_1
+template: immutability_example
+Mutation(Bad!)
+
+```Javascript
+var numbers = [1, 2, 3, 4, 5];
+numbers[4] = 6;
+
+numbers; //  [1, 2, 3, 4, 6]
+```
+---
+template: immutability_example_1
+Immutable(Good!)
+
+``` Javascript
+let numbers = [1, 2, 3, 4, 5];
+let newNumbers = numbers.map((value, index)) => {
+  if (index === 4) return 6;
+  return value;
+});
+
+numbers; //  [1, 2, 3, 4, 5]
+newNumbers; //  [1, 2, 3, 4, 6]
+```
+
+---
+
+# References
+
+[Medium: Functional Programming](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)
+
+[Anjana Vakil FP talk](https://www.youtube.com/watch?v=e-5obm1G_FY)
+
+[Dzone: Functional Programming](https://dzone.com/refcardz/functional-programming-with-javascript)
+
+[OpenSource.com: ](https://opensource.com/article/17/6/functional-javascript)
+
+[List of Functional Javascript Libraries](https://github.com/stoeffel/awesome-fp-js)
+
+---
+
+class: center, middle
+# Questions?
+
+---
+
+class: center, middle
+# Thank You
+
+
+</textarea>
+<script src="remark-latest.min.js">
+</script>
+<script>
+    var slideshow = remark.create();
+</script>
+</body>
+</html>
